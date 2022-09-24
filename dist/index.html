@@ -1,0 +1,99 @@
+<html> 
+<head>
+ <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+ <script> const contract_address = "0x792ED64ba3aC6f3A01dcc0C41f713137A7c85E5c";
+ /*We will need the contract's address.*/
+const abi = [[
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_maxLength",
+				"type": "uint256"
+			}
+		],
+		"name": "setMaxLength",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_notes",
+				"type": "string"
+			}
+		],
+		"name": "setNotes",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [],
+		"name": "maxLength",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "notes",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]];
+/*IMPORTANT*/
+/*ABI for the compiled code copy it and paste it in const abi*/
+import { ethers } from "ethers";
+let contract;
+
+window.addEventListener('load', () => {
+	if(typeof(ethereum) === 'undefined') {
+		return console.log("Metamask is not installed"); 
+	}
+	const provider = new ethers.providers.Web3Provider(window.ethereum);
+	contract = new ethers.Contract(contract_address, abi, provider);
+	/*  On load, we leverage the web3 object to create a contract object using the abi and contract_address defined above.*/
+	let notes = contract.notes().wait();
+	$('#notes').text(result);
+}); 
+
+/*After the contract object has been created, we can use it to read data, call methods, and post transactions through Metamask. Here we are reading notes, which is a string in the contract.*/
+async function setNotes() {
+	let notes = $('#new_notes').val();
+	const tx = await contract.setNotes(notes);
+	const receipt = await tx.wait();
+	console.log("txHash: " + receipt)
+}
+
+/*Create the setNotes function for the form to call.*/
+</script>
+</head> 
+<body> 
+<div id="notes"></div>
+ <br> 
+New Notes: <input type="text" id="new_notes" /> 
+<button onclick="setNotes()">Set Notes</button>
+/* Add a form allowing users to change the notes.*/
+</body>
+</html>
