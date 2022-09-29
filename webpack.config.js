@@ -7,7 +7,7 @@ module.exports = {
   //...
   devServer: {
     static: {
-      directory: path.join(__dirname, '/mnt/d/Pablo/Documentos/Proyectos/Nuclio/nuclio'),
+      directory: path.join(__dirname, "sustituir por ruta absoluta del directorio actual"),
     },
     compress: true,
     port: 9000,
